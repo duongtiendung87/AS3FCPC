@@ -1,4 +1,40 @@
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<time.h>
+#include<conio.h>
+
+#include <ctype.h>
+
+
+long N,NLA,MAXSTEPS = 1000;
+int D,C;
+double EPS = 0.001;
+double ALPHA = 0.5;
+double M,M1,M2,A,B,BETA;
+double **U, **V, **T, **W, **X;
+double **Ula, **Vla, **Xla;
+double ASWC_EPS = 0.01;
+double alpha = 1;
+int *cluster,*CLASS,*CLASSLA;
+int isInit = 0;
+int *num_must_link;
+int *num_cannot_link;
+int **must_link;
+int **cannot_link;
+int *label;
+int *queried;
+double calcX_subtract_V(int k, int j){
+	double tg = 0;
+	int i;
+	for(i = 0;i<D;i++){
+		tg += pow(X[k][i] - V[j][i],2);                     
+	}   
+	return tg;
+} 
+
 // Macro F1-score for clustering (refactored: pass all needed arguments)
 double F1_SCORE(int *trueLabels, double **U, int N, int C) {
 	int *predLabels = (int*)malloc(N * sizeof(int));
@@ -26,16 +62,6 @@ double F1_SCORE(int *trueLabels, double **U, int N, int C) {
 	free(predLabels);
 	return f1Sum / C;
 }
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include<string.h>
-#include<time.h>
-#include<conio.h>
-
-#include <ctype.h>
-
 
 int read_mask_to_CLASS(const char *filename, int N) {
 	FILE *f = fopen(filename, "r");
@@ -167,32 +193,6 @@ int read_image_to_X(const char *filename, int *out_N, int *out_D) {
 	fclose(f);
 	return 0;
 }
-
-long N,NLA,MAXSTEPS = 1000;
-int D,C;
-double EPS = 0.001;
-double ALPHA = 0.5;
-double M,M1,M2,A,B,BETA;
-double **U, **V, **T, **W, **X;
-double **Ula, **Vla, **Xla;
-double ASWC_EPS = 0.01;
-double alpha = 1;
-int *cluster,*CLASS,*CLASSLA;
-int isInit = 0;
-int *num_must_link;
-int *num_cannot_link;
-int **must_link;
-int **cannot_link;
-int *label;
-int *queried;
-double calcX_subtract_V(int k, int j){
-	double tg = 0;
-	int i;
-	for(i = 0;i<D;i++){
-		tg += pow(X[k][i] - V[j][i],2);                     
-	}   
-	return tg;
-} 
 
 double calcX_subtract_V2(double *x2, double *v2){
 	double tg = 0;
