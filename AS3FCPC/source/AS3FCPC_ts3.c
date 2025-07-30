@@ -1079,6 +1079,7 @@ int main(int argc, char **argv)
 	fprintf(f,"\nRI: %15.10f\n",ri/n);
 	fprintf(f,"NMI: %15.10f\n",tg);
 	fprintf(f, "DB: %15.10f\n", db / n);
+	fprintf(f, "F1-score: %15.10f\n", F1_SCORE(s1) / n);
 //	fprintf(f, "ASW: %15.10f\n", asw / n);
 //	fprintf(f, "PBM: %15.10f\n", pbm / n);
 	//	if(count){
